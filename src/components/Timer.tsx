@@ -10,6 +10,7 @@ export function Timer() {
   const [isWorkMode, setIsWorkMode] = useState(true);
   
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const endTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     // 許可リクエスト
@@ -58,41 +59,59 @@ export function Timer() {
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
 
-    if (isActive && timeLeft > 0) {
+    if (isActive) {
       interval = setInterval(() => {
-        setTimeLeft(t => t - 1);
-      }, 1000);
-    } else if (isActive && timeLeft === 0) {
-      setIsActive(false);
-      playAlarmSound();
-      if (isWorkMode) {
-        showNotification("1時間経過！", "お疲れ様です。5分間の休憩に入りましょう。");
-        setIsWorkMode(false);
-        setTimeLeft(BREAK_TIME);
-      } else {
-        showNotification("休憩終了！", "さあ、次の1時間のタスクを抽選しましょう。");
-        setIsWorkMode(true);
-        setTimeLeft(WORK_TIME);
-      }
+        if (!endTimeRef.current) return;
+        
+        const remaining = Math.max(0, Math.ceil((endTimeRef.current - Date.now()) / 1000));
+        setTimeLeft(remaining);
+
+        if (remaining <= 0) {
+          setIsActive(false);
+          endTimeRef.current = null;
+          playAlarmSound();
+          
+          setIsWorkMode(prevMode => {
+            const nextMode = !prevMode;
+            setTimeLeft(nextMode ? WORK_TIME : BREAK_TIME);
+            if (prevMode) {
+              showNotification("1時間経過！", "お疲れ様です。5分間の休憩に入りましょう。");
+            } else {
+              showNotification("休憩終了！", "さあ、次の1時間のタスクを抽選しましょう。");
+            }
+            return nextMode;
+          });
+        }
+      }, 500); // 1秒未満の間隔でチェックしてズレを防止
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, timeLeft, isWorkMode]);
+  }, [isActive]);
 
   const toggleTimer = () => {
     initAudio(); 
-    setIsActive(!isActive);
+    if (!isActive) {
+      // 再開または開始時：現在の時刻＋残り時間で終了予定時刻を設定
+      endTimeRef.current = Date.now() + timeLeft * 1000;
+      setIsActive(true);
+    } else {
+      // 一時停止時：終了予定時刻をクリア
+      setIsActive(false);
+      endTimeRef.current = null;
+    }
   };
 
   const resetTimer = () => {
     setIsActive(false);
+    endTimeRef.current = null;
     setTimeLeft(isWorkMode ? WORK_TIME : BREAK_TIME);
   };
 
   const switchMode = () => {
     setIsActive(false);
+    endTimeRef.current = null;
     const newMode = !isWorkMode;
     setIsWorkMode(newMode);
     setTimeLeft(newMode ? WORK_TIME : BREAK_TIME);
