@@ -62,24 +62,8 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="header-main">
-          <h1>Random 1 Hour</h1>
-          <p>次の1時間を決める運命のガチャ</p>
-        </div>
-        <nav className="header-nav">
-          <button 
-            className={`nav-btn ${currentView === 'main' ? 'active' : ''}`}
-            onClick={() => setCurrentView('main')}
-          >
-            抽選
-          </button>
-          <button 
-            className={`nav-btn ${currentView === 'history' ? 'active' : ''}`}
-            onClick={() => setCurrentView('history')}
-          >
-            履歴
-          </button>
-        </nav>
+        <h1>Random 1 Hour</h1>
+        <p>次の1時間を決める運命のガチャ</p>
       </header>
       <main className="app-main">
         {currentView === 'main' ? (
