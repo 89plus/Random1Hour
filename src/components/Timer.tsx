@@ -1,16 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import './Timer.css';
 
-const WORK_TIME = 60 * 60; // 60 minutes
+const TIME_OPTIONS = [15, 30, 45, 60];
 const BREAK_TIME = 5 * 60; // 5 minutes
 
 export function Timer() {
-  const [timeLeft, setTimeLeft] = useState(WORK_TIME);
+  const [workTime, setWorkTime] = useState(60 * 60); // Default 60 mins
+  const [timeLeft, setTimeLeft] = useState(60 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isWorkMode, setIsWorkMode] = useState(true);
   
   const audioCtxRef = useRef<AudioContext | null>(null);
   const endTimeRef = useRef<number | null>(null);
+
+  // 作業時間が変更されたら残り時間も更新
+  const handleTimeChange = (minutes: number) => {
+    const newSeconds = minutes * 60;
+    setWorkTime(newSeconds);
+    if (!isActive && isWorkMode) {
+      setTimeLeft(newSeconds);
+    }
+  };
 
   useEffect(() => {
     // 許可リクエスト
@@ -73,11 +83,11 @@ export function Timer() {
           
           setIsWorkMode(prevMode => {
             const nextMode = !prevMode;
-            setTimeLeft(nextMode ? WORK_TIME : BREAK_TIME);
+            setTimeLeft(nextMode ? workTime : BREAK_TIME);
             if (prevMode) {
-              showNotification("1時間経過！", "お疲れ様です。5分間の休憩に入りましょう。");
+              showNotification("集中完了！", "お疲れ様です。5分間の休憩に入りましょう。");
             } else {
-              showNotification("休憩終了！", "さあ、次の1時間のタスクを抽選しましょう。");
+              showNotification("休憩終了！", "さあ、次のタスクを抽選しましょう。");
             }
             return nextMode;
           });
@@ -106,7 +116,7 @@ export function Timer() {
   const resetTimer = () => {
     setIsActive(false);
     endTimeRef.current = null;
-    setTimeLeft(isWorkMode ? WORK_TIME : BREAK_TIME);
+    setTimeLeft(isWorkMode ? workTime : BREAK_TIME);
   };
 
   const switchMode = () => {
@@ -114,7 +124,7 @@ export function Timer() {
     endTimeRef.current = null;
     const newMode = !isWorkMode;
     setIsWorkMode(newMode);
-    setTimeLeft(newMode ? WORK_TIME : BREAK_TIME);
+    setTimeLeft(newMode ? workTime : BREAK_TIME);
   };
 
   const formatTime = (seconds: number) => {
@@ -123,16 +133,34 @@ export function Timer() {
     return `${m}:${s}`;
   };
 
-  const progressPercent = 100 - (timeLeft / (isWorkMode ? WORK_TIME : BREAK_TIME)) * 100;
+  const progressPercent = 100 - (timeLeft / (isWorkMode ? workTime : BREAK_TIME)) * 100;
 
   return (
     <div className={`glass-panel timer-container ${!isWorkMode ? 'break-mode' : ''}`}>
       <div className="timer-header">
-        <h2>{isWorkMode ? '集中タイム (1 Hour)' : '休けいタイム (5 Min)'}</h2>
+        <h2>
+          {isWorkMode ? '集中タイム' : '休けいタイム'}
+          {isWorkMode && <span className="time-badge">{workTime / 60} Min</span>}
+          {!isWorkMode && <span className="time-badge">5 Min</span>}
+        </h2>
         <button className="mode-switch-btn" onClick={switchMode}>
           切替
         </button>
       </div>
+
+      {isWorkMode && !isActive && timeLeft === workTime && (
+        <div className="time-selector">
+          {TIME_OPTIONS.map(mins => (
+            <button 
+              key={mins}
+              className={`time-option-btn ${workTime === mins * 60 ? 'active' : ''}`}
+              onClick={() => handleTimeChange(mins)}
+            >
+              {mins}分
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="timer-circle-wrap">
         <svg className="timer-circle" viewBox="0 0 120 120">

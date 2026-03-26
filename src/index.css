@@ -110,6 +110,26 @@ body {
   gap: 2rem;
 }
 
+/* PC向けの2x2グリッドレイアウト */
+@media (min-width: 800px) {
+  .app-container {
+    max-width: 1200px;
+  }
+  
+  .app-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* 履歴を全画面で表示する場合の対応 */
+  .app-main > .history-full-page {
+    grid-column: 1 / -1;
+  }
+}
+
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);

@@ -22,6 +22,22 @@
   margin: 0;
   font-size: 1.5rem;
   color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.time-badge {
+  font-size: 0.85rem;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-weight: normal;
+}
+
+.timer-container.break-mode .time-badge {
+  background: #10b981;
 }
 
 .timer-container.break-mode .timer-header h2 {
@@ -38,6 +54,32 @@
 }
 .mode-switch-btn:hover {
   background: #f1f5f9;
+}
+
+.time-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.time-option-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: #64748b;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.time-option-btn:hover {
+  background: #f1f5f9;
+}
+
+.time-option-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .timer-circle-wrap {
