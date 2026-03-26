@@ -51,7 +51,7 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
           <h2>{isFullPage ? 'すべての履歴 (All History)' : '今日の履歴 (Today)'}</h2>
         </div>
         <div className="history-header-right">
-          {onShowAll && history.length > 0 && (
+          {onShowAll && (
             <button className="show-all-btn" onClick={onShowAll}>過去の履歴を見る</button>
           )}
           {history.length > 0 && isFullPage && (
