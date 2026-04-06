@@ -46,7 +46,7 @@ export function ThemeDrawOverlay({ themes, onSelect }: Props) {
       <div className="draw-content">
         <header className="draw-header">
           <h1 className="draw-title">本日のテーマを決めよう</h1>
-          <p className="draw-desc">{shuffledThemes.length}枚のカードから、今日のあなたのテーマが決定されます。</p>
+          <p className="draw-desc">{shuffledThemes.length}枚のカードから、今日のテーマが決定されます。</p>
         </header>
 
         <div className={`cards-container ${isAnimating ? 'animating' : ''}`}>

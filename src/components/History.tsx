@@ -22,8 +22,8 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
 
   const formatTime = (timestamp: number) => {
     const d = new Date(timestamp);
-    return d.getHours().toString().padStart(2, '0') + ':' + 
-           d.getMinutes().toString().padStart(2, '0');
+    return d.getHours().toString().padStart(2, '0') + ':' +
+      d.getMinutes().toString().padStart(2, '0');
   };
 
   // Grouping logic
@@ -35,7 +35,7 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
   }, {} as Record<string, HistoryItem[]>);
 
   // Sort dates descending
-  const sortedDates = Object.keys(grouped).sort((a, b) => 
+  const sortedDates = Object.keys(grouped).sort((a, b) =>
     new Date(b).getTime() - new Date(a).getTime()
   );
 
@@ -48,7 +48,7 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
               ← メインへ戻る
             </button>
           )}
-          <h2>{isFullPage ? 'すべての履歴 (All History)' : '今日の履歴 (Today)'}</h2>
+          <h2>{isFullPage ? '過去の履歴' : '今日の履歴'}</h2>
         </div>
         <div className="history-header-right">
           {onShowAll && (
@@ -64,7 +64,7 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
         {sortedDates.map(date => {
           const items = grouped[date].sort((a, b) => b.timestamp - a.timestamp);
           const isOpen = !!openDates[date];
-          
+
           return (
             <div key={date} className={`history-group ${isOpen ? 'is-open' : ''}`}>
               <button className="group-header" onClick={() => toggleDate(date)}>
@@ -72,7 +72,7 @@ export function History({ history, onClear, onShowAll, onBack, isFullPage }: Pro
                 <span className="group-count">{items.length}件</span>
                 <span className="group-arrow">{isOpen ? '▼' : '▶'}</span>
               </button>
-              
+
               {isOpen && (
                 <ul className="history-list">
                   {items.map(item => (

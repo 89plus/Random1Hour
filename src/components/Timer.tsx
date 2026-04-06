@@ -139,7 +139,7 @@ export function Timer() {
     <div className={`glass-panel timer-container ${!isWorkMode ? 'break-mode' : ''}`}>
       <div className="timer-header">
         <h2>
-          {isWorkMode ? '集中タイム' : '休けいタイム'}
+          {isWorkMode ? 'タイマー' : '休憩タイマー'}
           {isWorkMode && <span className="time-badge">{workTime / 60} Min</span>}
           {!isWorkMode && <span className="time-badge">5 Min</span>}
         </h2>
