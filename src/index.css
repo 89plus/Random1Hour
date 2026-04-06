@@ -30,7 +30,58 @@
   --wheel-bg: #0d1117;
 }
 
-/* Other themes omitted for brevity or can be updated similarly if needed, but keeping them as is for now unless they feel off */
+[data-theme='mint'] {
+  --bg-color: #f0fdf4;
+  --text-color: #14532d;
+  --primary-color: #16a34a;
+  --primary-hover: #15803d;
+  --accent-color: #059669;
+  --accent-hover: #047857;
+  --surface-color: #ffffff;
+  --border-color: #bbf7d0;
+  --glass-bg: rgba(240, 253, 244, 0.75);
+  --glass-border: rgba(22, 163, 74, 0.2);
+  --wheel-bg: #dcfce7;
+  --mesh-color-1: #4ade80;
+  --mesh-color-2: #34d399;
+}
+
+[data-theme='sunset'] {
+  --bg-color: #fff7ed;
+  --text-color: #431407;
+  --primary-color: #ea580c;
+  --primary-hover: #c2410c;
+  --accent-color: #f59e0b;
+  --accent-hover: #d97706;
+  --surface-color: #ffffff;
+  --border-color: #fed7aa;
+  --glass-bg: rgba(255, 247, 237, 0.75);
+  --glass-border: rgba(234, 88, 12, 0.2);
+  --wheel-bg: #ffedd5;
+  --mesh-color-1: #fb923c;
+  --mesh-color-2: #fbbf24;
+}
+
+[data-theme='ocean'] {
+  --bg-color: #0c1a2e;
+  --text-color: #e0f2fe;
+  --primary-color: #0ea5e9;
+  --primary-hover: #0284c7;
+  --accent-color: #06b6d4;
+  --accent-hover: #0891b2;
+  --surface-color: #0f2744;
+  --border-color: #1e3a5f;
+  --glass-bg: rgba(12, 26, 46, 0.7);
+  --glass-border: rgba(14, 165, 233, 0.2);
+  --wheel-bg: #0f2744;
+  --mesh-color-1: #0ea5e9;
+  --mesh-color-2: #06b6d4;
+}
+
+:root {
+  --mesh-color-1: var(--primary-color);
+  --mesh-color-2: var(--accent-color);
+}
 
 * {
   box-sizing: border-box;
@@ -46,9 +97,9 @@ body {
   justify-content: center;
   align-items: flex-start;
   background-image: 
-    radial-gradient(at 0% 0%, var(--primary-color) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, var(--accent-color) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, var(--primary-color) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, var(--mesh-color-1, var(--primary-color)) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, var(--mesh-color-2, var(--accent-color)) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, var(--mesh-color-1, var(--primary-color)) 0px, transparent 50%);
   background-size: 100% 100%;
   background-attachment: fixed;
   animation: mesh-bg 20s ease infinite;
@@ -204,16 +255,19 @@ body {
 .secondary-actions {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 .sub-btn {
-  flex: 1;
+  flex: 0 0 auto;
   background: var(--surface-color);
   color: var(--text-color);
   border: 1px solid var(--border-color);
   box-shadow: none;
   font-size: 0.875rem;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 1.2rem;
+  white-space: nowrap;
 }
 
 .sub-btn:hover {
@@ -233,6 +287,8 @@ button {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 button::after {
