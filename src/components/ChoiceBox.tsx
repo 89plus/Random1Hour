@@ -27,12 +27,12 @@ export function ChoiceBox({ choices, allTasks, onSelect, onCancel }: Props) {
       <div className="choicebox-header">
         <span className="choicebox-badge">The Destiny Triple</span>
         <h3>運命の3択</h3>
-        <p>提示された3つの候補から、今の直感で1つ選んでください。</p>
+        <p>提示された3つの候補から1つ選ぶ</p>
       </div>
-      
+
       <div className="choices-grid">
         {choices.map((task, index) => (
-          <SlotCard 
+          <SlotCard
             key={task.id}
             index={index}
             finalTask={task}
@@ -52,8 +52,8 @@ export function ChoiceBox({ choices, allTasks, onSelect, onCancel }: Props) {
   );
 }
 
-function SlotCard({ index, finalTask, allTasks, isStopped, onSelect }: { 
-  index: number, finalTask: Task, allTasks: Task[], isStopped: boolean, onSelect: () => void 
+function SlotCard({ index, finalTask, allTasks, isStopped, onSelect }: {
+  index: number, finalTask: Task, allTasks: Task[], isStopped: boolean, onSelect: () => void
 }) {
   const [displayTask, setDisplayTask] = useState<Task>(allTasks[0] || finalTask);
 
@@ -74,7 +74,7 @@ function SlotCard({ index, finalTask, allTasks, isStopped, onSelect }: {
   }, [isStopped, allTasks, finalTask]);
 
   return (
-    <button 
+    <button
       className={`choice-card reel-card ${isStopped ? 'is-stopped' : 'is-spinning'}`}
       onClick={onSelect}
       disabled={!isStopped}

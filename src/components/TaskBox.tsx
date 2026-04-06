@@ -35,13 +35,12 @@ export function TaskBox({ tasks, setTasks, history, onSelect }: Props) {
   return (
     <div className="glass-panel taskbox-container">
       <div className="taskbox-header">
-        <h2>抽選Box（行動登録）</h2>
-        <p className="taskbox-desc">ガチャガチャに入れたい「行動」を登録してください。</p>
+        <h2>ルーレットに行動を登録</h2>
       </div>
-      
+
       <form className="taskbox-form" onSubmit={handleAdd}>
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="例: 読書、プログラミング、掃除..."
@@ -58,10 +57,10 @@ export function TaskBox({ tasks, setTasks, history, onSelect }: Props) {
             <li key={task.id} className="task-item">
               <span className="task-text">{task.text}</span>
               <div className="task-item-actions">
-                <button 
-                  className="select-item-btn" 
+                <button
+                  className="select-item-btn"
                   onClick={() => onSelect(task)}
-                  title="これを今日のミッションにする（ルーレットなし）"
+                  title="ルーレットなしで決定"
                 >
                   決定
                 </button>
@@ -70,7 +69,7 @@ export function TaskBox({ tasks, setTasks, history, onSelect }: Props) {
             </li>
           ))}
           {tasks.length === 0 && (
-            <li className="empty-msg">タスクが登録されていません</li>
+            <li className="empty-msg">行動が登録されていません</li>
           )}
         </ul>
       </div>

@@ -9,7 +9,7 @@ export function Timer() {
   const [timeLeft, setTimeLeft] = useState(60 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isWorkMode, setIsWorkMode] = useState(true);
-  
+
   const audioCtxRef = useRef<AudioContext | null>(null);
   const endTimeRef = useRef<number | null>(null);
 
@@ -72,7 +72,7 @@ export function Timer() {
     if (isActive) {
       interval = setInterval(() => {
         if (!endTimeRef.current) return;
-        
+
         const remaining = Math.max(0, Math.ceil((endTimeRef.current - Date.now()) / 1000));
         setTimeLeft(remaining);
 
@@ -80,14 +80,14 @@ export function Timer() {
           setIsActive(false);
           endTimeRef.current = null;
           playAlarmSound();
-          
+
           setIsWorkMode(prevMode => {
             const nextMode = !prevMode;
             setTimeLeft(nextMode ? workTime : BREAK_TIME);
             if (prevMode) {
               showNotification("集中完了！", "お疲れ様です。5分間の休憩に入りましょう。");
             } else {
-              showNotification("休憩終了！", "さあ、次のタスクを抽選しましょう。");
+              showNotification("休憩終了！", "次のタスクを抽選しましょう。");
             }
             return nextMode;
           });
@@ -101,7 +101,7 @@ export function Timer() {
   }, [isActive]);
 
   const toggleTimer = () => {
-    initAudio(); 
+    initAudio();
     if (!isActive) {
       // 再開または開始時：現在の時刻＋残り時間で終了予定時刻を設定
       endTimeRef.current = Date.now() + timeLeft * 1000;
@@ -151,7 +151,7 @@ export function Timer() {
       {isWorkMode && !isActive && timeLeft === workTime && (
         <div className="time-selector">
           {TIME_OPTIONS.map(mins => (
-            <button 
+            <button
               key={mins}
               className={`time-option-btn ${workTime === mins * 60 ? 'active' : ''}`}
               onClick={() => handleTimeChange(mins)}
@@ -165,11 +165,11 @@ export function Timer() {
       <div className="timer-circle-wrap">
         <svg className="timer-circle" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="54" className="timer-circle-bg" />
-          <circle 
-            cx="60" cy="60" r="54" 
-            className="timer-circle-progress" 
-            strokeDasharray="339.292" 
-            strokeDashoffset={339.292 - (339.292 * progressPercent) / 100} 
+          <circle
+            cx="60" cy="60" r="54"
+            className="timer-circle-progress"
+            strokeDasharray="339.292"
+            strokeDashoffset={339.292 - (339.292 * progressPercent) / 100}
           />
         </svg>
         <div className="timer-text">{formatTime(timeLeft)}</div>

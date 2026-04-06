@@ -31,13 +31,13 @@ function App() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [currentView, setCurrentView] = useState<'main' | 'history'>('main');
   const [theme, setTheme] = useState<Theme>('default');
-  
+
   // Daily Theme States
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>([]);
   const [selectedDailyTheme, setSelectedDailyTheme] = useState<DailyTask | null>(null);
   const [showThemeDraw, setShowThemeDraw] = useState(false);
   const [showDailyEditor, setShowDailyEditor] = useState(false);
-  
+
   // New States for expanded features
   const [activeMission, setActiveMission] = useState<Task | null>(null);
   const [pendingChoices, setPendingChoices] = useState<Task[]>([]);
@@ -59,7 +59,7 @@ function App() {
     if (savedDailyTasks) setDailyTasks(JSON.parse(savedDailyTasks));
 
     const todayStr = new Date().toLocaleDateString('ja-JP');
-    
+
     // Check if it's a new day
     if (lastVisited !== todayStr) {
       // New day! Clear previous selection
@@ -136,7 +136,7 @@ function App() {
   };
 
   const todayStr = new Date().toLocaleDateString('ja-JP');
-  const todayHistory = history.filter(item => 
+  const todayHistory = history.filter(item =>
     new Date(item.timestamp).toLocaleDateString('ja-JP') === todayStr
   );
 
@@ -145,7 +145,7 @@ function App() {
       <header className="app-header">
         <div className="header-main">
           <h1>Random 1 Hour</h1>
-          <p>次の1時間を決める運命のガチャ</p>
+          <p>次の行動をランダムで決めよう</p>
         </div>
         <div className="theme-selector glass-panel">
           <label>Theme:</label>
@@ -163,7 +163,7 @@ function App() {
           </button>
         </div>
       </header>
-      
+
       {selectedDailyTheme && (
         <section className="daily-theme-banner">
           <div className="daily-banner-content">
@@ -179,8 +179,8 @@ function App() {
           <div className="ritual-prompt-content">
             <span className="ritual-sparkle">✨</span>
             <div className="ritual-text-wrap">
-              <h3>本日の運命を決めましょう</h3>
-              <p>朝の儀式（デイリーテーマ抽選）を開始する</p>
+              <h3>本日のテーマを決めよう</h3>
+              <p>今日のテーマの抽選を開始する</p>
             </div>
           </div>
           <button className="ritual-start-btn">抽選スタート</button>
@@ -192,14 +192,14 @@ function App() {
           <div className="ritual-prompt-content">
             <span className="ritual-sparkle">📅</span>
             <div className="ritual-text-wrap">
-              <h3>デイリーテーマを登録しましょう</h3>
+              <h3>今日のテーマを登録しよう</h3>
               <p>1日の指針となるテーマをリストに追加してください</p>
             </div>
           </div>
           <button className="ritual-start-btn">設定を開く</button>
         </section>
       )}
-      
+
       {activeMission && (
         <section className="active-mission-banner glass-panel">
           <div className="mission-content">
@@ -215,56 +215,56 @@ function App() {
           <div className="main-layout">
             <div className="main-col">
               {pendingChoices.length > 0 ? (
-                <ChoiceBox 
-                  choices={pendingChoices} 
+                <ChoiceBox
+                  choices={pendingChoices}
                   allTasks={tasks}
-                  onSelect={handleSelectTask} 
-                  onCancel={() => setPendingChoices([])} 
+                  onSelect={handleSelectTask}
+                  onCancel={() => setPendingChoices([])}
                 />
               ) : (
-                <Roulette 
-                  tasks={tasks} 
-                  onResult={handleSelectTask} 
+                <Roulette
+                  tasks={tasks}
+                  onResult={handleSelectTask}
                   onTripleChoice={startTripleChoice}
-                  theme={theme} 
+                  theme={theme}
                 />
               )}
               <TaskBox tasks={tasks} setTasks={setTasks} history={history} onSelect={handleSelectTask} />
             </div>
             <div className="main-col">
               <Timer />
-              <History 
-                history={todayHistory} 
-                onClear={clearHistory} 
-                onShowAll={() => setCurrentView('history')} 
+              <History
+                history={todayHistory}
+                onClear={clearHistory}
+                onShowAll={() => setCurrentView('history')}
               />
             </div>
           </div>
         ) : (
-          <History 
-            history={history} 
-            onClear={clearHistory} 
-            onBack={() => setCurrentView('main')} 
-            isFullPage={true} 
+          <History
+            history={history}
+            onClear={clearHistory}
+            onBack={() => setCurrentView('main')}
+            isFullPage={true}
           />
         )}
       </main>
 
       {showThemeDraw && (
-        <ThemeDrawOverlay 
-          themes={dailyTasks} 
+        <ThemeDrawOverlay
+          themes={dailyTasks}
           onSelect={(theme) => {
             setSelectedDailyTheme(theme);
             setShowThemeDraw(false);
-          }} 
+          }}
         />
       )}
 
       {showDailyEditor && (
-        <DailyThemeEditor 
-          dailyTasks={dailyTasks} 
-          onUpdate={setDailyTasks} 
-          onClose={() => setShowDailyEditor(false)} 
+        <DailyThemeEditor
+          dailyTasks={dailyTasks}
+          onUpdate={setDailyTasks}
+          onClose={() => setShowDailyEditor(false)}
         />
       )}
     </div>
