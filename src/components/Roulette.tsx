@@ -253,9 +253,9 @@ export function Roulette({ tasks, onResult, onTripleChoice, theme }: Props) {
             className="roulette-btn sub-btn"
             onClick={onTripleChoice}
             disabled={isSpinning || tasks.length < 3}
-            title="ランダムに3つの選択肢を表示します"
+            title="ランダムに3つの選択肢を表示"
           >
-            運命の3択
+            ランダムな3択
           </button>
           <button
             className="roulette-btn sub-btn"

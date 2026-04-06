@@ -25,7 +25,6 @@ export function ChoiceBox({ choices, allTasks, onSelect, onCancel }: Props) {
   return (
     <div className="glass-panel choicebox-container scale-up">
       <div className="choicebox-header">
-        <span className="choicebox-badge">The Destiny Triple</span>
         <h3>ランダムな3択から選ぶ</h3>
       </div>
 
@@ -33,7 +32,6 @@ export function ChoiceBox({ choices, allTasks, onSelect, onCancel }: Props) {
         {choices.map((task, index) => (
           <SlotCard
             key={task.id}
-            index={index}
             finalTask={task}
             allTasks={allTasks}
             isStopped={stoppedIndices.includes(index)}
@@ -51,8 +49,8 @@ export function ChoiceBox({ choices, allTasks, onSelect, onCancel }: Props) {
   );
 }
 
-function SlotCard({ index, finalTask, allTasks, isStopped, onSelect }: {
-  index: number, finalTask: Task, allTasks: Task[], isStopped: boolean, onSelect: () => void
+function SlotCard({ finalTask, allTasks, isStopped, onSelect }: {
+  finalTask: Task, allTasks: Task[], isStopped: boolean, onSelect: () => void
 }) {
   const [displayTask, setDisplayTask] = useState<Task>(allTasks[0] || finalTask);
 
@@ -78,7 +76,6 @@ function SlotCard({ index, finalTask, allTasks, isStopped, onSelect }: {
       onClick={onSelect}
       disabled={!isStopped}
     >
-      <div className="choice-number">{index + 1}</div>
       <div className="reel-mask">
         <div className="reel-content">
           <span className="choice-text">{displayTask.text}</span>
